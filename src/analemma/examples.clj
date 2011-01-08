@@ -72,6 +72,12 @@
 			  :fill "#00ff00"))))
 
 (def ex-text4 (svg
+	        (text {:x 20 :y 10}
+		      (tspan "tspan line 1")
+		      (tspan "tspan line 2")
+		      (tspan "tspan line 3"))))
+
+(def ex-text5 (svg
 	        (text {:y 10}
 		      (tspan {:x 0} "tspan line 1")
 		      (tspan {:x 0 :dy 15} "tspan line 2")
@@ -87,6 +93,14 @@
 					 :a [1,1 0 0,0 100,0]])])
 		   (-> (text {:x 10 :y 100}
 			     (text-path "Text along a curved path..." :my-path))
+		       (style :stroke "#000000"))))
+
+(def ex-text-path2 (svg
+		    (defs [:the-text (text "Text ref along a curved path...")
+			   :my-path (path [:M [75,20]
+					   :a [1,1 0 0,0 100,0]])])
+		   (-> (text {:x 10 :y 100}
+			     (text-path (tref :the-text) :my-path))
 		       (style :stroke "#000000"))))
 
 (def ex-img (svg
@@ -123,10 +137,14 @@
 
 	       (-> (rect 300 100 300 100)
 		   (style :fill (rgb 255 255 0))
-		   (animate :x :begin 0 :dur 9 :from 300 :to 0)
-		   (animate :y :begin 0 :dur 9 :from 100 :to 0)
-		   (animate :width :begin 0 :dur 9 :from 300 :to 800)
-		   (animate :height :begin 0 :dur 9 :from 100 :to 300))
+		   (animate :x
+			    :begin 0 :dur 9 :from 300 :to 0)
+		   (animate :y
+			    :begin 0 :dur 9 :from 100 :to 0)
+		   (animate :width
+			    :begin 0 :dur 9 :from 300 :to 800)
+		   (animate :height
+			    :begin 0 :dur 9 :from 100 :to 300))
 
 	       (-> (group
 		     (-> (text "It's alive")

@@ -28,5 +28,6 @@
 	 "/>")))
 
 (defn emit [& tags]
-  (reduce #(str %1 (emit-tag %2)) "" tags))
+  (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+       (reduce #(str %1 (emit-tag %2)) "" tags)))
 

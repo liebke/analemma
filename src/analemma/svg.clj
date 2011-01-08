@@ -6,8 +6,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn svg [& content]
-  (let [xmlns {"xmlns" "http://www.w3.org/2000/svg"
-	       "xmlns:xlink" "http://www.w3.org/1999/xlink"}
+  (let [xmlns {"xmlns:svg" "http://www.w3.org/2000/svg"
+	       "xmlns" "http://www.w3.org/2000/svg"
+	       "xmlns:xlink" "http://www.w3.org/1999/xlink"
+	       "version" "1.0"}
 	attrs (if (map? (first content)) (first content) {})
 	content (if (map? (first content)) (rest content) content)]
     (concat [:svg (merge xmlns attrs)] content)))
