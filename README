@@ -1,17 +1,9 @@
 # analemma
 
-FIXME: write description
-
-## Usage
-
-FIXME: write
-
-## Installation
-
-FIXME: write
+A Clojure SVG DSL.
 
 ## License
 
-Copyright (C) 2010 FIXME
+Copyright (C) 2011 David Edgar Liebke
 
 Distributed under the Eclipse Public License, the same as Clojure.
