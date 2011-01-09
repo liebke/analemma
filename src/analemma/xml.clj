@@ -4,14 +4,51 @@
 ;; XML FUNCTIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn has-attrs? [tag]
+  (map? (second tag)))
+
+(defn has-content? [tag]
+  (if (has-attrs? tag)
+    (> (count tag) 2)
+    (> (count tag) 1)))
+
 (defn get-name [tag]
   (name (first tag)))
 
-(defn get-attrs [[name & content]]
-  (if (map? (first content)) (first content) {}))
+(defn get-attrs [tag]
+  (if (has-attrs? tag) (second tag) {}))
 
-(defn get-content [[name & content]]
-  (if (map? (first content)) (rest content) content))
+(defn get-content [tag]
+  (if (has-attrs? tag)
+    (drop 2 tag)
+    (rest tag)))
+
+(defn set-attrs [tag & attrs]
+  (concat [(get-name tag) attrs]
+	  (get-content tag)))
+
+(defn set-content [tag & content]
+  (concat [(get-name tag) (get-attrs tag)]
+	  content))
+
+(defn add-attrs [tag & attrs]
+  (concat [(get-name tag)
+	   (apply assoc (get-attrs tag) attrs)]
+	  (get-content tag)))
+
+(defn merge-attrs [tag attrs]
+  (concat [(get-name tag)
+	   (merge (get-attrs tag) attrs)]
+	  (get-content tag)))
+
+(defn add-content [tag & content]
+  (concat [(get-name tag)
+	   (get-attrs tag)]
+	  (concat (get-content tag)
+		  content)))
+
+(defn update-attrs [tag [& keys] update-fn & args]
+  (set-attrs tag (apply update-in (get-attrs tag) keys update-fn args)))
 
 (defn emit-attrs [attrs]
   (when attrs

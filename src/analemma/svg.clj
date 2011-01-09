@@ -20,8 +20,7 @@
 		  (reduce (fn [s [k v]]
 			    (str s " " (name k) ": " (if (keyword? v) (name v) v) "; "))
 			  "" props))]
-    (concat [(xml/get-name elem) (assoc (xml/get-attrs elem) :style styling)]
-	    (xml/get-content elem))))
+    (xml/add-attrs elem  :style styling)))
 
 (defn line [x1 y1 x2 y2 & options]
   (let [attrs (apply hash-map options)]
@@ -67,32 +66,35 @@
   (str "rgb(" r "," g "," b ")"))
 
 (defn animate [elem attr & attrs]
-  (concat elem [[:animate (merge {:attributeName (name attr), :begin 0, :fill "freeze"}
-				 (apply hash-map attrs))]]))
+  (-> elem
+      (xml/add-content (-> [:animate {:attributeName (name attr),
+				      :begin 0, :fill "freeze"}]
+			   (xml/merge-attrs (apply hash-map attrs))))))
 
 (defn animate-motion [elem & attrs]
-  (concat elem [[:animateMotion (merge {:begin 0, :fill "freeze"}
-				       (apply hash-map attrs))]]))
+  (-> elem
+      (xml/add-content (-> [:animateMotion {:begin 0, :fill "freeze"}]
+			   (xml/merge-attrs (apply hash-map attrs))))))
 
 (defn animate-color [elem attr & attrs]
-  (concat elem [[:animateColor (merge {:attributeName (name attr), :begin 0, :fill "freeze"}
-				      (apply hash-map attrs))]]))
+  (-> elem
+      (xml/add-content (-> [:animateColor {:attributeName (name attr),
+					   :begin 0, :fill "freeze"}]
+			   (xml/merge-attrs (apply hash-map attrs))))))
 
 (defn animate-transform [elem & attrs]
-  (concat elem [[:animateTransform (merge {:attributeName "transform",
-					   :begin 0, :fill "freeze"}
-					  (apply hash-map attrs))]]))
+  (-> elem
+      (xml/add-content (-> [:animateTransform {:attributeName "transform"
+					       :begin 0, :fill "freeze"}]
+			   (xml/merge-attrs (apply hash-map attrs))))))
 
 (defn transform [elem trans]
   (let [attrs (xml/get-attrs elem)
 	trans (if (:transform attrs)
 		(str (:transform attrs) " " trans)
 		trans)]
-    (concat [(xml/get-name elem)
-	     (assoc attrs :transform trans)]
-	    (xml/get-content elem))))
+    (xml/add-attrs elem :transform trans)))
 
-;; transform functions
 (defn rotate [elem angle x y]
   (transform elem (str "rotate(" angle "," x "," y ")")))
 
@@ -104,9 +106,7 @@
   (let [bindings (partition 2 bindings)
 	f (fn [defs-tag [id tag]]
 	    (conj defs-tag
-		  (concat [(xml/get-name tag)
-			   (assoc (xml/get-attrs tag) :id (name id))]
-			  (xml/get-content tag))))]
+		  (xml/add-attrs tag :id (name id))))]
     (reduce f [:defs] bindings)))
 
 (defn text-path [text path-id]
