@@ -1,80 +1,115 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>Analemma</title>
+<style type="text/css">
 
-	<title>liebke/analemma @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #3a548d;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #c5ab72; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #c5ab72; }
-    h3 { text-align: center; color: #c5ab72; }
-    a { color: #c5ab72; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-	</style>
-	
+  body {font-family: Garamond, Bodoni, "Times New Roman"; background-color: #F9F9F9; padding: 5px; font-size: 1.1em; color: #333333; }
+  h1, h2 { font-family: Helvetica, Gill, sans-serif; color: #333333; }
+  h3, h4 { color: #333333; }
+  li {padding-left: 25px; padding-right: 25px; padding-top: 5px; }
+  .code-ref { background-color: #F8F8F8; color: #003399; font-style:italic; padding-left: 5px; padding-right: 5px; font-size: 0.9em; }
+  .code-sig { background-color: #DDDDDD; color: #003399; font-family: "Courier New", Courier; padding-left: 5px; }
+  .code-listing { background-color: #FFFFFF; color: #444444; border: #EEEEEE 1px solid;  padding-bottom: 1px; padding-left: 5px; border-bottom: #DDDDDD 1px solid; border-right: #DDDDDD 1px solid; font-size: 1em }
+  .quote { background-color: #F8F8F8; color: #555555; font-style:italic; padding-left: 25px; padding-right: 25px; width: 500px; margin: 15px; }
+code { color: #555555; }
+  .content { width: 675px; margin: 0px auto; }
+  p { text-align: justify; }
+  .box { background-color: #DDDDDD; color: #333333; padding-left:
+  15px; padding-top: 15px; padding-bottom: 15px;  border: #CCCCCC 1px
+  solid; border-bottom: #CCCCCC 1px solid; border-right: #CCCCCC 1px
+  solid; font-size: 0.95em; font-family: Helvetica, Gill, sans-serif; }
+  .box li { padding: 2px; }
+  .box ul { margin-top: 5px; margin-bottom: 2px; }
+  .footnote { font-style: italic; color:#777777; font-size: 0.9em; padding-left: 5px;
+  padding-right: 25px; padding-bottom: 10px; }
+
+  strike, s { text-decoration: line-through; color: red; font-weight: bold; }
+  .insert { font-weight: bold; font-style: italic; color:#33a933;}
+</style>
 </head>
 
 <body>
-  <a href="http://github.com/liebke/analemma"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-
-  <div id="container">
-
-    <div class="download">
-      <a href="http://github.com/liebke/analemma/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/liebke/analemma/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/liebke/analemma">analemma</a>
-      <span class="small">by <a href="http://github.com/liebke">liebke</a></span></h1>
-
-    <div class="description">
-      A Clojure SVG DSL and charting library
-    </div>
-
-    <h2>Authors</h2>
-<p>David Edgar Liebke (liebke@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p>David Edgar Liebke (liebke@gmail.com)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/liebke/analemma/zipball/master">zip</a> or
-      <a href="http://github.com/liebke/analemma/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/liebke/analemma</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/liebke/analemma">liebke/analemma</a>
-    </div>
-
-  </div>
-
+<div class="content">
   
-</body>
-</html>
+<h1>Analemma</h1>
+
+<h2>Example Charts</h2>
+
+<h3>Plotting Analemma Data</h3>
+
+<div class="code-listing">
+<pre><code>(spit "analemma.svg"
+      (emit-svg
+        (-> (xy-plot :xmin -30 :maxx 10,
+                     :ymin -30 :maxy 30
+                     :height 500 :width 500)
+	     (add-points analemma-data))))
+</code></pre>
+</div>
+
+<p>The full source code and data for this example can
+be found at <a
+href="https://github.com/liebke/analemma/blob/master/src/examples/analemma.clj">
+github</a>. The data was obtained from <a
+href="http://www.wsanford.com/~wsanford/exo/sundials/analemma_calc.html">this
+site</a>.</p>
+
+<embed src="images/analemma.svg" width="600" height="600"
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+
+<h3>Plotting Sine and Cosine</h3>
+
+<div class="code-listing">
+<pre><code>(let [x (range -5 5 0.05)
+      y1 (map #(Math/cos %) x)
+      y2 (map #(Math/sin %) x)]
+  (spit "sin-cos-small.svg"
+    (emit-svg
+      (-> (xy-plot :width 450 :height 200
+                   :xmin -5 :xmax 5
+                   :ymin -1.5 :ymax 1.5)
+          (add-points [x y1] :transpose? true
+                      :size 1)
+          (add-points [x y2] :transpose? true
+                      :size 1
+                      :fill (rgb 255 0 0))))))
+</code></pre>
+</div>
+
+<p>The full source code and data for this example can
+be found at <a
+href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
+github</a>.</p>
+
+<embed src="images/sin-cos-small.svg" width="600" height="300"
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+
+<h3>Plotting Random Data</h3>
+
+<div class="code-listing">
+<pre><code>
+(let [x (repeatedly 25 #(rand-int 100))
+      y (repeatedly 25 #(rand-int 100))]
+  (spit (str directory "/rand-plot.svg")
+        (emit-svg
+          (-> (xy-plot :width 500 :height 500 :label? true)
+              (add-points [x y] :transpose? true)))))
+</code></pre>
+</div>
+
+<p>The full source code and data for this example can
+be found at <a
+href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
+github</a>.</p>
+
+<embed src="images/rand-plot.svg" width="600" height="600"
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+</div> <!-- content -->
+</body> </html>
