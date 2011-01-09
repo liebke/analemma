@@ -2,6 +2,8 @@
 
 <i><b>Analemma</b> is a Clojure SVG DSL and charting library.</i>
 
+<p>See the <a href="http://liebke.github.com/analemma">Analemma website</a> for more information.</p>
+
 <pre><code>
 (spit "analemma.svg"
       (emit-svg
@@ -11,7 +13,7 @@
 	     (add-points analemma-data))))
 </code></pre>
 
-<a href="http://incanter.org/analemma/images/analemma.svg"><img src="https://github.com/liebke/analemma/raw/master/docs/images/analemma.png" width="400" /></a>
+<a href="http://liebke.github.com/analemma/images/analemma.svg"><img src="https://github.com/liebke/analemma/raw/master/images/analemma.png" width="400" /></a>
 
 <pre><code>
 (spit "sin-cos.svg"
@@ -22,10 +24,10 @@
           (-> (xy-plot :minx -5 :xmax 5 :ymin -1.5 :maxy 1.5)
               (add-points [x y1] :transpose? true)
               (add-points [x y2] :transpose? true
-                          :colors (repeat (count x) (rgb 255 0 0)))))
+                          :color (rgb 255 0 0))))))
 </code></pre>
 
-<a href="http://incanter.org/analemma/images/sin-cos.svg"><img src="https://github.com/liebke/analemma/raw/master/docs/images/sin-cos.png" width="400" /></a>
+<a href="http://liebke.github.com/analemma/images/sin-cos-small.svg"><img src="https://github.com/liebke/analemma/raw/master/images/sin-cos.png" width="400" /></a>
 
 Copyright (C) 2011 David Edgar Liebke
 
