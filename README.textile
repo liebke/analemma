@@ -1,10 +1,8 @@
-# analemma
+Analemma: A Clojure SVG DSL.
 
-A Clojure SVG DSL.
+<img src="https://github.com/liebke/analemma/raw/master/docs/images/analemma.png" width="400" />
 
-<img srg="https://github.com/liebke/analemma/raw/master/docs/images/analemma.svg" />
-
-## License
+License
 
 Copyright (C) 2011 David Edgar Liebke
 
