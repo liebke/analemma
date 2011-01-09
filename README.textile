@@ -1,8 +1,10 @@
-Analemma: A Clojure SVG DSL.
+<h1>Analemma</h1>
 
-<img src="https://github.com/liebke/analemma/raw/master/docs/images/analemma.png" width="400" />
+<b>Analemma</b> <i>is a Clojure SVG DSL and charting library.</i>
 
-License
+<a href="https://github.com/liebke/analemma/raw/master/docs/images/analemma.svg"><img src="https://github.com/liebke/analemma/raw/master/docs/images/analemma.png" width="400" /></a>
+
+<a href="https://github.com/liebke/analemma/raw/master/docs/images/sin-cos.svg"><img src="https://github.com/liebke/analemma/raw/master/docs/images/sin-cos.png" width="400" /></a>
 
 Copyright (C) 2011 David Edgar Liebke
 
