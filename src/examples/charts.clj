@@ -21,7 +21,7 @@
 	(add-points [x y2] :transpose? true
 		    :colors (repeat (count x) (rgb 255 0 0))))))
 
-(defn demo []
-  (spit "example1.svg" (emit-svg (example1)))
-  (spit "example2.svg" (emit-svg (example2))))
+(defn demo [directory]
+  (spit (str directory "/example1.svg") (emit-svg (example1)))
+  (spit (str directory "/example2.svg") (emit-svg (example2))))
 

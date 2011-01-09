@@ -81,8 +81,8 @@
       [-11.761	-23.41]
       [-14.691	-23.14]])
 
-(defn analemma []
-  (spit "analemma.svg"
+(defn analemma [filename]
+  (spit filename
 	(emit-svg
 	 (-> (xy-plot :xmin -30 :xmax 10,
 		      :ymin -30 :ymax 30

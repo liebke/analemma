@@ -18,9 +18,13 @@
   (let [props (apply hash-map properties)
 	styling (when (seq props)
 		  (reduce (fn [s [k v]]
-			    (str s " " (name k) ": " (if (keyword? v) (name v) v) "; "))
+			    (str s " " (name k) ": "
+				 (if (keyword? v)
+				   (name v)
+				   v)
+				 "; "))
 			  "" props))]
-    (xml/add-attrs elem  :style styling)))
+    (xml/add-attrs elem :style styling)))
 
 (defn line [x1 y1 x2 y2 & options]
   (let [attrs (apply hash-map options)]
