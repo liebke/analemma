@@ -16,7 +16,7 @@
 	     :stroke major-color
 	     :stroke-width major-width)))
 
-(defn x-grid [{:keys [n height width minx maxx]}
+(defn x-grid [{:keys [n height width xmin xmax]}
 	      major-color minor-color major-width minor-width]
   (let [grid-x-space (/ width n)]
     (for [i (range 1 n)]
@@ -24,7 +24,7 @@
 	  (style :stroke (if (even? i) major-color minor-color)
 		 :stroke-width (if (even? i) major-width minor-width))))))
 
-(defn y-grid [{:keys [n height width miny maxy]}
+(defn y-grid [{:keys [n height width ymin ymax]}
 	      major-color minor-color major-width minor-width]
   (let [grid-y-space (/ height n)]
     (for [i (range 1 n)]
@@ -32,23 +32,23 @@
 	  (style :stroke (if (even? i) major-color minor-color)
 		 :stroke-width (if (even? i) major-width minor-width))))))
 
-(defn x-axis [{:keys [n height width minx maxx]}]
+(defn x-axis [{:keys [n height width xmin xmax]}]
   (let [grid-x-space (/ width n)]
     (for [i (range 0 (inc n)) :when (even? i)]
       (-> (text {:x (* i grid-x-space) :y (+ 20 height)}
 		(format "%.1f" (translate-value (* i grid-x-space)
-						0 width minx maxx)))
+						0 width xmin xmax)))
 	  (style :fill (rgb 150 150 150)
 		 :font-family "Verdana"
 		 :font-size "12px"
 		 :text-anchor "middle")))))
 
-(defn y-axis [{:keys [n height width miny maxy]}]
+(defn y-axis [{:keys [n height width ymin ymax]}]
   (let [grid-y-space (/ height n)]
     (for [i (range 1 (inc n)) :when (even? i)]
       (-> (text {:x 0 :y (- height (* i grid-y-space))}
 		(format "%.1f" (translate-value (* i grid-y-space)
-						0 height miny maxy)))
+						0 height ymin ymax)))
 	  (style :fill (rgb 150 150 150)
 		 :font-family "Verdana"
 		 :font-size "12px"
@@ -57,10 +57,10 @@
 
 (defn xy-plot [& options]
   (let [grid (merge {:x 50, :y 50, :height 500, :width 750,
-		     :minx 0, :maxx 100, :miny 0, :maxy 100,
+		     :xmin 0, :xmax 100, :ymin 0, :ymax 100,
 		     :n 10, :label? false, :points []}
 		    (apply hash-map options))
-	{:keys [x y height width minx maxx miny maxy n points]} grid
+	{:keys [x y height width xmin xmax ymin ymax n points]} grid
 	 major-color (rgb 255 255 255)
 	 minor-color (rgb 245 245 245)
 	 grid-fill (rgb 225 225 225)
@@ -77,10 +77,10 @@
 	       (y-axis grid)))}))
 
 (defn add-point [grid x y r & options]
-  (let [{:keys [height width minx maxx miny maxy n]} (:spec grid)
+  (let [{:keys [height width xmin xmax ymin ymax n]} (:spec grid)
 	label? (-> grid :spec :label?)
-	x* (translate-value x minx maxx 0 width)
-	y* (- height (translate-value y miny maxy 0 height))
+	x* (translate-value x xmin xmax 0 width)
+	y* (- height (translate-value y ymin ymax 0 height))
 	point (apply circle x* y* r options)
 	label (-> (text {:x (+ x* r) :y (- y* r)}
 			(str (format "%.1f" (float x)) ","

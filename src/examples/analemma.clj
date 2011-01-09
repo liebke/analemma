@@ -84,8 +84,8 @@
 (defn analemma []
   (spit "analemma.svg"
 	(emit-svg
-	 (-> (xy-plot :minx -30 :maxx 10,
-		      :miny -30 :maxy 30
+	 (-> (xy-plot :xmin -30 :xmax 10,
+		      :ymin -30 :ymax 30
 		      :height 500 :width 500)
 	     (add-points analemma-data)))))
 

@@ -1,8 +1,29 @@
 <h1>Analemma</h1>
 
-<b>Analemma</b> <i>is a Clojure SVG DSL and charting library.</i>
+<i><b>Analemma</b> is a Clojure SVG DSL and charting library.</i>
+
+<pre><code>
+(spit "analemma.svg"
+      (emit-svg
+        (-> (xy-plot :xmin -30 :maxx 10,
+                     :ymin -30 :maxy 30
+                     :height 500 :width 500)
+	     (add-points analemma-data))))
+</code></pre>
 
 <a href="https://github.com/liebke/analemma/raw/master/docs/images/analemma.svg"><img src="https://github.com/liebke/analemma/raw/master/docs/images/analemma.png" width="400" /></a>
+
+<pre><code>
+(spit "sin-cos.svg"
+      (emit-svg
+        (let [x (range -5 5 0.05)
+              y1 (map #(Math/cos %) x)
+              y2 (map #(Math/sin %) x)]
+          (-> (xy-plot :minx -5 :xmax 5 :ymin -1.5 :maxy 1.5)
+              (add-points [x y1] :transpose? true)
+              (add-points [x y2] :transpose? true
+                          :colors (repeat (count x) (rgb 255 0 0)))))
+</code></pre>
 
 <a href="https://github.com/liebke/analemma/raw/master/docs/images/sin-cos.svg"><img src="https://github.com/liebke/analemma/raw/master/docs/images/sin-cos.png" width="400" /></a>
 

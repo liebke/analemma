@@ -16,7 +16,7 @@
   (let [x (range -5 5 0.05)
 	y1 (map #(Math/cos %) x)
 	y2 (map #(Math/sin %) x)]
-    (-> (xy-plot :minx -5 :maxx 5 :miny -1.5 :maxy 1.5)
+    (-> (xy-plot :xmin -5 :xmax 5 :ymin -1.5 :ymax 1.5)
 	(add-points [x y1] :transpose? true)
 	(add-points [x y2] :transpose? true
 		    :colors (repeat (count x) (rgb 255 0 0))))))
