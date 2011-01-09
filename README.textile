@@ -2,6 +2,8 @@
 
 A Clojure SVG DSL.
 
+<img srg="https://github.com/liebke/analemma/raw/master/docs/images/analemma.svg" />
+
 ## License
 
 Copyright (C) 2011 David Edgar Liebke
