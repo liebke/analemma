@@ -6,22 +6,27 @@
 ;; BASIC CHART EXAMPLES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn example1 []
-  (let [grid (xy-plot :label? true)
-	x (for [_ (range 25)] (rand-int 100))
-	y (for [_ (range 25)] (rand-int 100))]
-    (add-points grid [x y] :transpose? true)))
+(defn rand-plot [directory]
+  (let [x (repeatedly 25 #(rand-int 100))
+	y (repeatedly 25 #(rand-int 100))]
+    (spit (str directory "/rand-plot.svg")
+	  (emit-svg
+	   (-> (xy-plot :width 500 :height 500 :label? true)
+	       (add-points [x y] :transpose? true))))))
 
-(defn example2 []
+(defn sin-cos-plot [directory]
   (let [x (range -5 5 0.05)
 	y1 (map #(Math/cos %) x)
 	y2 (map #(Math/sin %) x)]
-    (-> (xy-plot :xmin -5 :xmax 5 :ymin -1.5 :ymax 1.5)
-	(add-points [x y1] :transpose? true)
-	(add-points [x y2] :transpose? true
-		    :colors (repeat (count x) (rgb 255 0 0))))))
+    (spit (str directory "/sin-cos-small.svg")
+	  (emit-svg
+	    (-> (xy-plot :width 450 :height 200
+			 :xmin -5 :xmax 5
+			 :ymin -1.5 :ymax 1.5)
+		(add-points [x y1] :transpose? true
+			    :size 1)
+		(add-points [x y2] :transpose? true
+			    :size 1
+			    :fill (rgb 255 0 0)))))))
 
-(defn demo [directory]
-  (spit (str directory "/example1.svg") (emit-svg (example1)))
-  (spit (str directory "/example2.svg") (emit-svg (example2))))
 

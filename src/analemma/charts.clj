@@ -114,7 +114,10 @@
 
 (defn add-point [chart x y r & options]
   (let [props (:properties chart)
-	{:keys [height width xmin xmax ymin ymax label?]} props
+	{:keys [height width
+		xmin xmax
+		ymin ymax
+		label?]} props
 	x* (translate-value x xmin xmax 0 width)
 	y* (- height (translate-value y ymin ymax 0 height))
 	point (apply circle x* y* r options)
@@ -130,10 +133,10 @@
 (defn xy->points [[x y]]
   (map (fn [p1 p2] [p1 p2]) x y))
 
-(defn add-points [chart data & {:keys [sizes colors transpose?]}]
+(defn add-points [chart data & {:keys [size sizes colors transpose? fill]}]
   (let [[x y] (if transpose? data (points->xy data))
-	sizes (or sizes (repeat (count x) 3))
-	colors (or colors (repeat (count x) (rgb 0 0 255)))
+	sizes (or sizes (repeat (count x) (or size 3)))
+	colors (or colors (repeat (count x) (or fill (rgb 0 0 255))))
 	data (map (fn [x y r color] [x y r color]) x y sizes colors)]
     (reduce (fn [svg [x y r color]] (add-point svg x y r :fill color))
 	    chart data)))

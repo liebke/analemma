@@ -2,19 +2,114 @@
 <html>
 <head>
 <title>Analemma</title>
+<style type="text/css">
+
+  body {font-family: Garamond, Bodoni, "Times New Roman"; background-color: #F9F9F9; padding: 5px; font-size: 1.1em; color: #333333; }
+  h1, h2 { font-family: Helvetica, Gill, sans-serif; color: #333333; }
+  h3, h4 { color: #333333; }
+  li {padding-left: 25px; padding-right: 25px; padding-top: 5px; }
+  .code-ref { background-color: #F8F8F8; color: #003399; font-style:italic; padding-left: 5px; padding-right: 5px; font-size: 0.9em; }
+  .code-sig { background-color: #DDDDDD; color: #003399; font-family: "Courier New", Courier; padding-left: 5px; }
+  .code-listing { background-color: #FFFFFF; color: #444444; border: #EEEEEE 1px solid;  padding-bottom: 1px; padding-left: 5px; border-bottom: #DDDDDD 1px solid; border-right: #DDDDDD 1px solid; font-size: 1em }
+  .quote { background-color: #F8F8F8; color: #555555; font-style:italic; padding-left: 25px; padding-right: 25px; width: 500px; margin: 15px; }
+code { color: #555555; }
+  .content { width: 675px; margin: 0px auto; }
+  p { text-align: justify; }
+  .box { background-color: #DDDDDD; color: #333333; padding-left:
+  15px; padding-top: 15px; padding-bottom: 15px;  border: #CCCCCC 1px
+  solid; border-bottom: #CCCCCC 1px solid; border-right: #CCCCCC 1px
+  solid; font-size: 0.95em; font-family: Helvetica, Gill, sans-serif; }
+  .box li { padding: 2px; }
+  .box ul { margin-top: 5px; margin-bottom: 2px; }
+  .footnote { font-style: italic; color:#777777; font-size: 0.9em; padding-left: 5px;
+  padding-right: 25px; padding-bottom: 10px; }
+
+  strike, s { text-decoration: line-through; color: red; font-weight: bold; }
+  .insert { font-weight: bold; font-style: italic; color:#33a933;}
+</style>
 </head>
 
 <body>
+<div class="content">
+  
 <h1>Analemma</h1>
 
-<h3>Analemma data</h3>
-<embed src="images/analemma.svg" width="500" height="500"
+<h2>Example Charts</h2>
+
+<h3>Plotting Analemma Data</h3>
+
+<div class="code-listing">
+<pre><code>(spit "analemma.svg"
+      (emit-svg
+        (-> (xy-plot :xmin -30 :maxx 10,
+                     :ymin -30 :maxy 30
+                     :height 500 :width 500)
+	     (add-points analemma-data))))
+</code></pre>
+</div>
+
+<p>The full source code and data for this example can
+be found at <a
+href="https://github.com/liebke/analemma/blob/master/src/examples/analemma.clj">
+github</a>. The data was obtained from <a
+href="http://www.wsanford.com/~wsanford/exo/sundials/analemma_calc.html">this
+site</a>.</p>
+
+<embed src="images/analemma.svg" width="600" height="600"
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
-<h3>Sin and Cosine</h3>
-<embed src="images/sin-cos.svg" width="750" height="500"
+
+<h3>Plotting Sine and Cosine</h3>
+
+<div class="code-listing">
+<pre><code>(let [x (range -5 5 0.05)
+      y1 (map #(Math/cos %) x)
+      y2 (map #(Math/sin %) x)]
+  (spit "sin-cos-small.svg"
+    (emit-svg
+      (-> (xy-plot :width 450 :height 200
+                   :xmin -5 :xmax 5
+                   :ymin -1.5 :ymax 1.5)
+          (add-points [x y1] :transpose? true
+                      :size 1)
+          (add-points [x y2] :transpose? true
+                      :size 1
+                      :fill (rgb 255 0 0))))))
+</code></pre>
+</div>
+
+<p>The full source code and data for this example can
+be found at <a
+href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
+github</a>.</p>
+
+<embed src="images/sin-cos-small.svg" width="600" height="300"
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
+
+<h3>Plotting Random Data</h3>
+
+<div class="code-listing">
+<pre><code>
+(let [x (repeatedly 25 #(rand-int 100))
+      y (repeatedly 25 #(rand-int 100))]
+  (spit (str directory "/rand-plot.svg")
+        (emit-svg
+          (-> (xy-plot :width 500 :height 500 :label? true)
+              (add-points [x y] :transpose? true)))))
+</code></pre>
+</div>
+
+<p>The full source code and data for this example can
+be found at <a
+href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
+github</a>.</p>
+
+<embed src="images/rand-plot.svg" width="600" height="600"
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+</div> <!-- content -->
 </body> </html>
