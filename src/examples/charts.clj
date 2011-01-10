@@ -11,8 +11,8 @@
 	y (repeatedly 25 #(rand-int 100))]
     (spit (str directory "/rand-plot.svg")
 	  (emit-svg
-	   (-> (xy-plot :width 500 :height 500 :label? true)
-	       (add-points [x y] :transpose? true))))))
+	   (-> (xy-plot :width 500 :height 500 :label-points? true)
+	       (add-points [x y] :transpose-data?? true))))))
 
 (defn sin-cos-plot [directory]
   (let [x (range -5 5 0.05)
@@ -23,9 +23,9 @@
 	    (-> (xy-plot :width 450 :height 200
 			 :xmin -5 :xmax 5
 			 :ymin -1.5 :ymax 1.5)
-		(add-points [x y1] :transpose? true
+		(add-points [x y1] :transpose-data?? true
 			    :size 1)
-		(add-points [x y2] :transpose? true
+		(add-points [x y2] :transpose-data?? true
 			    :size 1
 			    :fill (rgb 255 0 0)))))))
 

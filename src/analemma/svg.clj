@@ -1,6 +1,7 @@
 (ns analemma.svg
   (:require [analemma.xml :as xml]))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; SVG FUNCTIONS
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -122,3 +123,15 @@
 (defn image [href & options]
   (let [attrs (apply hash-map options)]
     [:image (merge {"xlink:href" href} attrs)]))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; UTILITY FUNCTIONS
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn translate-value [v from-min from-max to-min to-max]
+  (let [scale (/ (- to-max to-min)
+		 (- from-max from-min))
+	trans (- to-min (* from-min scale))]
+    (float (+ (* v scale) trans))))
+

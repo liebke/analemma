@@ -26,8 +26,8 @@
               y1 (map #(Math/cos %) x)
               y2 (map #(Math/sin %) x)]
           (-> (xy-plot :minx -5 :xmax 5 :ymin -1.5 :maxy 1.5)
-              (add-points [x y1] :transpose? true)
-              (add-points [x y2] :transpose? true
+              (add-points [x y1] :transpose-data?? true)
+              (add-points [x y2] :transpose-data?? true
                           :color (rgb 255 0 0))))))
 </code></pre>
 

@@ -1,6 +1,7 @@
 (ns analemma.charts
   (:use [analemma.svg :only [rect style line text group
-			     translate circle rgb svg]]
+			     translate circle rgb svg
+			     translate-value]]
 	[analemma.xml :only [emit]]))
 
 (def default-chart-props {:x 50, :y 50,
@@ -8,7 +9,7 @@
 			  :xmin 0, :xmax 100,
 			  :ymin 0, :ymax 100,
 			  :grid-lines 10,
-			  :label? false,
+			  :label-points?? false,
 			  :points []
 			  :major-grid-color (rgb 255 255 255)
 			  :minor-grid-color (rgb 245 245 245)
@@ -21,12 +22,6 @@
 			  :label-font-family "Verdana"
 			  :label-font-size "10px"
 			  :label-number-format "%.1f"})
-
-(defn translate-value [v from-min from-max to-min to-max]
-  (let [scale (/ (- to-max to-min)
-		 (- from-max from-min))
-	trans (- to-min (* from-min scale))]
-    (float (+ (* v scale) trans))))
 
 (defn chart-background [{:keys [height width background-color
 				major-grid-color major-grid-width]}]
@@ -117,14 +112,14 @@
 	{:keys [height width
 		xmin xmax
 		ymin ymax
-		label?]} props
+		label-points??]} props
 	x* (translate-value x xmin xmax 0 width)
 	y* (- height (translate-value y ymin ymax 0 height))
 	point (apply circle x* y* r options)
 	label (point-label props x* y* x y r)]
     (-> chart
 	(update-in [:points] (fn [old] (conj old (apply assoc {:x x, :y y, :r r} options))))
-	(assoc :svg (concat (:svg chart) (if label? [point label] [point]))))))
+	(assoc :svg (concat (:svg chart) (if label-points?? [point label] [point]))))))
 
 (defn points->xy [points]
   (reduce (fn [[x y] [p1 p2]] [(conj x p1) (conj y p2)])
@@ -133,8 +128,8 @@
 (defn xy->points [[x y]]
   (map (fn [p1 p2] [p1 p2]) x y))
 
-(defn add-points [chart data & {:keys [size sizes colors transpose? fill]}]
-  (let [[x y] (if transpose? data (points->xy data))
+(defn add-points [chart data & {:keys [size sizes colors transpose-data?? fill]}]
+  (let [[x y] (if transpose-data?? data (points->xy data))
 	sizes (or sizes (repeat (count x) (or size 3)))
 	colors (or colors (repeat (count x) (or fill (rgb 0 0 255))))
 	data (map (fn [x y r color] [x y r color]) x y sizes colors)]
