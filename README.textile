@@ -7,7 +7,9 @@
 
 <!-- <a href="http://www.astronet.ru/db/xware/msg/1218925"><img src="http://images.astronet.ru/pubd/2006/12/25/0001219003/analemma2004_ayiomamitis.small.jpg" height="250" /></a> -->
 
-<h3>Example Charts</h3>
+<h2>Example Charts</h2>
+
+<h3>Plotting Analemma Data</h3>
 
 <pre><code>
 (spit "analemma.svg"
@@ -19,6 +21,9 @@
 </code></pre>
 
 <a href="http://liebke.github.com/analemma/images/analemma.svg"><img src="https://github.com/liebke/analemma/raw/master/images/analemma.png" width="400" /></a>
+
+
+<h3>Plotting Sine and Cosine</h3>
 
 <pre><code>
 (spit "sin-cos.svg"
@@ -34,7 +39,29 @@
 
 <a href="http://liebke.github.com/analemma/images/sin-cos-small.svg"><img src="https://github.com/liebke/analemma/raw/master/images/sin-cos.png" width="400" /></a>
 
-<p>See the <a href="http://liebke.github.com/analemma">Analemma website</a> for more information.</p>
+
+<h3>Creating the Analemma logo</h3>
+
+<pre><code>(emit
+  (svg
+    (apply group
+           (rect 0 0 160 500 :fill "#ffffff")
+           (-> (text {:x 120 :y 60} "Analemma")
+               (style :fill #"000066"
+                      :font-family "Garamond"
+                      :font-size "75px"
+                      :alignment-baseline :middle))
+               (for [[x y] analemma-data]
+                 (circle (translate-value x -30 5 0 125)
+                         (translate-value y -25 30 125 0)
+                         2 :fill "#000066")))))
+</code></pre></div>
+
+<a href="http://liebke.github.com/analemma/images/analemma-logo.svg"><img src="http://liebke.github.com/analemma/images/analemma-logo.png" /></a>
+
+
+
+<p>See the <a href="http://liebke.github.com/analemma">Analemma website</a> for more examples.</p>
 
 
 Copyright (C) 2011 David Edgar Liebke
