@@ -34,8 +34,7 @@ code { color: #555555; }
   
 <h1>Analemma</h1>
 
-
-  <p><i><b>Analemma</b> is a <a
+ <p><i><b>Analemma</b> is a <a
   href="http://clojure.org">Clojure</a>-based <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> DSL and charting library.</i> In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.
 
 <h2>Architecture</h2>
@@ -44,6 +43,9 @@ code { color: #555555; }
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
+<div class="footnote">* The above animated image may not be visible in
+ Firefox, and has not been tested in IE.</div>
+ 
 <h2>Example Charts</h2>
 
 <h3>Plotting Analemma Data</h3>
@@ -107,8 +109,8 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 <pre><code>
 (let [x (repeatedly 25 #(rand-int 100))
       y (repeatedly 25 #(rand-int 100))]
-  (spit (str directory "rand-plot.svg")
-        (emit-svg
+ (spit (str directory "rand-plot.svg")
+       (emit-svg
           (-> (xy-plot :width 500 :height 500
                        :label-points? true)
               (add-points [x y] :transpose-data?? true)))))
@@ -125,7 +127,6 @@ type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
 
-
 <h2>SVG Examples</h2>
 
 <h3>Animated Analemma Stack</h3>
@@ -133,6 +134,9 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 <embed src="images/analemma-stack.svg" width="350" height="200"
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+<div class="footnote">* The above animated image may not be visible in
+ Firefox, and has not been tested in IE.</div>
 
 <p>The full source code and data for this example can
 be found at <a
@@ -177,6 +181,7 @@ github</a>.</p>
 	      (translate 10 10))))))
   </code></pre>
 </div>
+
 
 </div> <!-- content -->
 </body> </html>
