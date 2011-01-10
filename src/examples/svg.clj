@@ -1,5 +1,5 @@
 (ns examples.svg
-  (:use [analemma.xml :only [emit add-content]]
+  (:use [analemma.xml :only [emit add-content add-attrs]]
 	analemma.svg))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -181,5 +181,38 @@
 			
 		       (translate 100 100))))
 
+(defn txt-box [txt x y fill]
+  (let [box-width 300
+	box-height 50]
+    (svg {:x x :y y}
+	 (group 
+	  (-> (rect 0 0 box-height box-width :rx 5 :ry 5)
+	      (style :stroke fill :fill fill))
+	  (-> (text {:x (/ box-width 2)
+		     :y (/ box-height 2)}
+		    txt)
+	      (style :fill "#ffffff"
+		     :font-size "25px"
+		     :font-family "Verdana"
+		     :alignment-baseline :middle
+		     :text-anchor :middle))))))
 
+(defn analemma-stack [directory]
+  (spit (str directory "/analemma-stack.svg")
+	(emit
+	 (svg
+	  (-> (group
+	       (-> (txt-box "analemma.charts" 0 10 "#006600")
+		   (add-attrs :visibility :hidden)
+		   (animate :visibility :to :visible :begin 5)
+		   (animate :y :begin 5 :dur 1 :from 0 :to 10))
+	       (-> (txt-box "analemma.svg" 0 65 "#660000")
+		   (add-attrs :visibility :hidden)
+		   (animate :visibility :to :visible :begin 3)
+		   (animate :y :begin 3 :dur 2 :from 0 :to 65))
+	       (-> (txt-box "analemma.xml" 0 120 "#000066")
+		   (add-attrs :visibility :hidden)
+		   (animate :visibility :to :visible :begin 1)
+		   (animate :y :begin 1 :dur 4 :from 0 :to 120)))
+	      (translate 10 10))))))
 

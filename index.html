@@ -34,12 +34,16 @@ code { color: #555555; }
   
 <h1>Analemma</h1>
 
+
   <p><i><b>Analemma</b> is a <a
-  href="http://clojure.org">Clojure</a>-based <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> DSL and charting library.</i> In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.</p>
+  href="http://clojure.org">Clojure</a>-based <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> DSL and charting library.</i> In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.
 
-<a href="http://www.astronet.ru/db/xware/msg/1218925"><img src="http://images.astronet.ru/pubd/2006/12/25/0001219003/analemma2004_ayiomamitis.small.jpg" height="350" /></a>
-
+<h2>Architecture</h2>
   
+  <embed src="images/analemma-stack.svg" width="350" height="200"
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
 <h2>Example Charts</h2>
 
 <h3>Plotting Analemma Data</h3>
@@ -103,7 +107,7 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 <pre><code>
 (let [x (repeatedly 25 #(rand-int 100))
       y (repeatedly 25 #(rand-int 100))]
-  (spit (str directory "/rand-plot.svg")
+  (spit (str directory "rand-plot.svg")
         (emit-svg
           (-> (xy-plot :width 500 :height 500
                        :label-points? true)
@@ -119,6 +123,60 @@ github</a>.</p>
 <embed src="images/rand-plot.svg" width="600" height="600"
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+
+
+<h2>SVG Examples</h2>
+
+<h3>Animated Analemma Stack</h3>
+
+<embed src="images/analemma-stack.svg" width="350" height="200"
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+<p>The full source code and data for this example can
+be found at <a
+href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
+github</a>.</p>
+
+<div class="code-listing">
+  <pre><code>
+(defn txt-box [txt x y fill]
+  (let [box-width 300
+	box-height 50]
+    (svg {:x x :y y}
+	 (group 
+	  (-> (rect 0 0 box-height box-width :rx 5 :ry 5)
+	      (style :stroke fill :fill fill))
+	  (-> (text {:x (/ box-width 2)
+		     :y (/ box-height 2)}
+		    txt)
+	      (style :fill "#ffffff"
+		     :font-size "25px"
+		     :font-family "Verdana"
+		     :alignment-baseline :middle
+		     :text-anchor :middle))))))
+
+(defn analemma-stack [directory]
+  (spit (str directory "analemma-stack.svg")
+	(emit
+	 (svg
+	  (-> (group
+	       (-> (txt-box "analemma.charts" 0 10 "#006600")
+		   (add-attrs :visibility :hidden)
+		   (animate :visibility :to :visible :begin 5)
+		   (animate :y :begin 5 :dur 1 :from 0 :to 10))
+	       (-> (txt-box "analemma.svg" 0 65 "#660000")
+		   (add-attrs :visibility :hidden)
+		   (animate :visibility :to :visible :begin 3)
+		   (animate :y :begin 3 :dur 2 :from 0 :to 65))
+	       (-> (txt-box "analemma.xml" 0 120 "#000066")
+		   (add-attrs :visibility :hidden)
+		   (animate :visibility :to :visible :begin 1)
+		   (animate :y :begin 1 :dur 4 :from 0 :to 120)))
+	      (translate 10 10))))))
+  </code></pre>
+</div>
 
 </div> <!-- content -->
 </body> </html>

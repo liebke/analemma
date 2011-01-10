@@ -112,14 +112,14 @@
 	{:keys [height width
 		xmin xmax
 		ymin ymax
-		label-points??]} props
+		label-points?]} props
 	x* (translate-value x xmin xmax 0 width)
 	y* (- height (translate-value y ymin ymax 0 height))
 	point (apply circle x* y* r options)
 	label (point-label props x* y* x y r)]
     (-> chart
 	(update-in [:points] (fn [old] (conj old (apply assoc {:x x, :y y, :r r} options))))
-	(assoc :svg (concat (:svg chart) (if label-points?? [point label] [point]))))))
+	(assoc :svg (concat (:svg chart) (if label-points? [point label] [point]))))))
 
 (defn points->xy [points]
   (reduce (fn [[x y] [p1 p2]] [(conj x p1) (conj y p2)])
