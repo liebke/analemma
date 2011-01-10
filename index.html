@@ -4,9 +4,10 @@
 <title>Analemma</title>
 <style type="text/css">
 
-  body {font-family: Garamond, Bodoni, "Times New Roman"; background-color: #F9F9F9; padding: 5px; font-size: 1.1em; color: #333333; }
-  h1, h2 { font-family: Helvetica, Gill, sans-serif; color: #333333; }
-  h3, h4 { color: #333333; }
+  body {font-family: Garamond, Bodoni, "Times New Roman"; background-color: #ffffff; padding: 5px; font-size: 1.1em; color: #333333; }
+  h1 { font-family: Garamond, Georgia, serif; color: #000066; }
+  h2 { font-family: Helvetica, Gill, sans-serif; color: #000066; }
+  h3, h4 { color: #444444; }
   li {padding-left: 25px; padding-right: 25px; padding-top: 5px; }
   .code-ref { background-color: #F8F8F8; color: #003399; font-style:italic; padding-left: 5px; padding-right: 5px; font-size: 0.9em; }
   .code-sig { background-color: #DDDDDD; color: #003399; font-family: "Courier New", Courier; padding-left: 5px; }
@@ -32,7 +33,10 @@ code { color: #555555; }
 <body>
 <div class="content">
   
-<h1>Analemma</h1>
+
+<embed src="images/analemma-logo.svg" width="475" height="135"
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
  <p><i><b>Analemma</b> is a <a
   href="http://clojure.org">Clojure</a>-based <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> DSL and charting library.</i> In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.
@@ -84,10 +88,10 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
                    :xmin -5 :xmax 5
                    :ymin -1.5 :ymax 1.5)
           (add-points [x y1]
-                      :transpose-data?? true
+                      :transpose-data? true
                       :size 1)
           (add-points [x y2]
-                      :transpose-data?? true
+                      :transpose-data? true
                       :size 1
                       :fill (rgb 255 0 0))))))
 </code></pre>
@@ -113,7 +117,7 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
        (emit-svg
           (-> (xy-plot :width 500 :height 500
                        :label-points? true)
-              (add-points [x y] :transpose-data?? true)))))
+              (add-points [x y] :transpose-data? true)))))
 </code></pre>
 </div>
 
@@ -128,6 +132,33 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
 
 <h2>SVG Examples</h2>
+
+<h3>Analemma Logo</h3>
+
+<embed src="images/analemma-logo.svg" width="475" height="135" 
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
+
+<p>The full source code and data for this example can
+be found at <a
+href="https://github.com/liebke/analemma/blob/master/src/examples/analemma.clj">
+github</a>.</p>
+
+<div class="code-listing">
+<pre><code>(emit
+  (svg
+    (apply group
+           (rect 0 0 160 500 :fill "#ffffff")
+           (-> (text {:x 120 :y 60} "Analemma")
+               (style :fill #"000066"
+                      :font-family "Garamond"
+                      :font-size "75px"
+                      :alignment-baseline :middle))
+               (for [[x y] analemma-data]
+                 (circle (translate-value x -30 5 0 125)
+                         (translate-value y -25 30 125 0)
+                         2 :fill "#000066")))))
+</code></pre></div>
 
 <h3>Animated Analemma Stack</h3>
 
@@ -144,7 +175,7 @@ href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
 github</a>.</p>
 
 <div class="code-listing">
-  <pre><code>
+ <pre><code>
 (defn txt-box [txt x y fill]
   (let [box-width 300
 	box-height 50]
