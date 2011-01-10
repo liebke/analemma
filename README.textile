@@ -1,5 +1,6 @@
 
-<h1>Analemma</h1>
+
+<a href="http://liebke.github.com/analemma"><img src="http://liebke.github.com/analemma/images/analemma-logo.svg" /></a>
 
 <p><i><b><a href="http://liebke.github.com/analemma">Analemma</a></b> is a <a
   href="http://clojure.org">Clojure</a>-based <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> DSL and charting library.</i> In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.</p>
