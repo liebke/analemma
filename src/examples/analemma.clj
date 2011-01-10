@@ -1,5 +1,7 @@
 (ns examples.analemma
-  (:use [analemma.charts :only [emit-svg xy-plot add-points]]))
+  (:use [analemma.charts :only [emit-svg xy-plot add-points]]
+	[analemma.svg]
+	[analemma.xml]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ANALEMMA CHART
@@ -89,3 +91,19 @@
 		      :height 500 :width 500)
 	     (add-points analemma-data)))))
 
+
+(defn analemma-logo [filename]
+  (spit filename
+	(emit
+	  (svg
+	   (apply group
+		  (rect 0 0 160 500 :fill "#ffffff")
+		  (-> (text {:x 120 :y 60} "Analemma")
+		      (style :fill #"000066"
+			     :font-family "Garamond"
+			     :font-size "75px"
+			     :alignment-baseline :middle))
+		  (for [[x y] analemma-data]
+		    (circle (translate-value x -30 5 0 125)
+			    (translate-value y -25 30 125 0)
+			    2 :fill "#000066")))))))
