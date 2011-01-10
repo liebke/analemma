@@ -28,6 +28,20 @@ code { color: #555555; }
   strike, s { text-decoration: line-through; color: red; font-weight: bold; }
   .insert { font-weight: bold; font-style: italic; color:#33a933;}
 </style>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-12283660-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 </head>
 
 <body>
@@ -38,8 +52,17 @@ code { color: #555555; }
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
- <p><i><b>Analemma</b> is a <a
-  href="http://clojure.org">Clojure</a>-based <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> DSL and charting library.</i> In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.
+ <p><i><b><a href="http://github.com/liebke/analemma">Analemma</a></b> is a <a
+  href="http://clojure.org">Clojure</a> library for generating
+  charts and <a
+  href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">Scalable
+  Vector Graphics</a> (SVG). The code is available on <a href="http://github.com/liebke/analemma">Github</a></i></p>
+
+  <div class="footnote">* In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.</div>
+
+  <embed src="images/sin-cos-small.svg" width="600" height="300"
+type="image/svg+xml"
+pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
 <h2>Architecture</h2>
   
@@ -47,10 +70,36 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
-<div class="footnote">* The above animated image may not be visible in
+<div class="footnote">* The above animated SVG image may not be visible in
  Firefox, and has not been tested in IE.</div>
+
+ <p>Analemma was originally developed as an extended example to use
+ when teaching
+ Clojure programming, and so it's been designed to be lightweight and
+ have no dependencies other than Clojure.</p>
  
-<h2>Example Charts</h2>
+ <p>Analemma is designed as a stack of three simple libraries, each building
+ on the one below it. At the bottom is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/xml.clj">analemma.xml</a>, which provides a
+ lightweight DSL for generating XML from Clojure data structures; if you've used <a href="https://github.com/weavejester">James Reeves</a>'
+ <a href="https://github.com/weavejester/hiccup">Hiccup</a> library
+ for generating HTML, then the syntax will look familiar.</p>
+
+ <p>The next level up is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/svg.clj">analemma.svg</a>, which provides a set of
+ functions for generating and transforming SVG images and animations. SVG supports an
+ enormous number of tags, most of which are not represented in this
+ library; when an unimplemented tag is required, just drop down into analemma.xml
+ and create the necessary SVG XML with Clojure data structures.</p>
+
+ <p>The final layer is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/charts.clj">analemma.charts</a>, which provides basic charting
+ functionality with a syntax similar to <a
+ href="http://incanter.org">Incanter</a>, and a visual theme similar
+ to <a href="http://had.co.nz/">Hadley Wickham</a>'s <a href="http://had.co.nz/ggplot2/">ggplot2</a> library for
+ <a href="http://www.r-project.org">R</a>. The development of this
+ library has just begun, and it is missing a lot of functionality; when
+ additional features are required, just drop down into analemma.svg or
+ analemma.xml.</p>
+ 
+<h2>analemma.charts examples</h2>
 
 <h3>Plotting Analemma Data</h3>
 
@@ -65,7 +114,7 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 </div>
 
 <p>The full source code and data for this example can
-be found at <a
+be found on <a
 href="https://github.com/liebke/analemma/blob/master/src/examples/analemma.clj">
 github</a>. The data was obtained from <a
 href="http://www.wsanford.com/~wsanford/exo/sundials/analemma_calc.html">this
@@ -98,7 +147,7 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 </div>
 
 <p>The full source code and data for this example can
-be found at <a
+be found on <a
 href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
 github</a>.</p>
 
@@ -107,13 +156,12 @@ type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
 
-<h3>Plotting Random Data</h3>
+<h3>Labeling Data Points</h3>
 
 <div class="code-listing">
-<pre><code>
-(let [x (repeatedly 25 #(rand-int 100))
+<pre><code>(let [x (repeatedly 25 #(rand-int 100))
       y (repeatedly 25 #(rand-int 100))]
- (spit (str directory "rand-plot.svg")
+ (spit "rand-plot.svg"
        (emit-svg
           (-> (xy-plot :width 500 :height 500
                        :label-points? true)
@@ -122,7 +170,7 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 </div>
 
 <p>The full source code and data for this example can
-be found at <a
+be found on <a
 href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
 github</a>.</p>
 
@@ -131,7 +179,7 @@ type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
 
-<h2>SVG Examples</h2>
+<h2>analemma.svg examples</h2>
 
 <h3>Analemma Logo</h3>
 
@@ -140,7 +188,7 @@ type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
 <p>The full source code and data for this example can
-be found at <a
+be found on <a
 href="https://github.com/liebke/analemma/blob/master/src/examples/analemma.clj">
 github</a>.</p>
 
@@ -148,8 +196,8 @@ github</a>.</p>
 <pre><code>(emit
   (svg
     (apply group
-           (rect 0 0 160 500 :fill "#ffffff")
-           (-> (text {:x 120 :y 60} "Analemma")
+           (-> (text "Analemma")
+               (add-attrs :x 120 :y 60)
                (style :fill #"000066"
                       :font-family "Garamond"
                       :font-size "75px"
@@ -166,31 +214,31 @@ github</a>.</p>
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
-<div class="footnote">* The above animated image may not be visible in
+<div class="footnote">* The above animated SVG image may not be visible in
  Firefox, and has not been tested in IE.</div>
 
 <p>The full source code and data for this example can
-be found at <a
+be found on <a
 href="https://github.com/liebke/analemma/blob/master/src/examples/charts.clj">
 github</a>.</p>
 
 <div class="code-listing">
- <pre><code>
-(defn txt-box [txt x y fill]
+<pre><code>(defn txt-box [txt x y fill]
   (let [box-width 300
 	box-height 50]
-    (svg {:x x :y y}
-	 (group 
-	  (-> (rect 0 0 box-height box-width :rx 5 :ry 5)
-	      (style :stroke fill :fill fill))
-	  (-> (text {:x (/ box-width 2)
-		     :y (/ box-height 2)}
-		    txt)
-	      (style :fill "#ffffff"
-		     :font-size "25px"
-		     :font-family "Verdana"
-		     :alignment-baseline :middle
-		     :text-anchor :middle))))))
+    (-> (svg 
+	  (group 
+	    (-> (rect 0 0 box-height box-width :rx 5 :ry 5)
+	        (style :stroke fill :fill fill))
+	    (-> (text txt)
+                (add-attrs :x (/ box-width 2)
+                           :y (/ box-height 2)})
+	        (style :fill "#ffffff"
+                       :font-size "25px"
+                       :font-family "Verdana"
+                       :alignment-baseline :middle
+                       :text-anchor :middle))))
+        (add-attrs :x x :y y))))
 
 (defn analemma-stack [directory]
   (spit (str directory "analemma-stack.svg")
@@ -213,6 +261,25 @@ github</a>.</p>
   </code></pre>
 </div>
 
+<h2>analemma.xml examples</h2>
+
+The following code uses analemma.xml to produce a snippet of SVG XML.
+<div class="code-listing">
+<pre><code>(emit
+  [:svg
+    [:g {:x 100, :y 100}
+      [:rect {:x 0, :y 0, :height 50, :width 300
+              :style "stroke: #660000; fill: #660000;"}]
+      [:text {:style "fill: #660000; font-size: 25px; font-family: Verdana"
+              :x 150 :y 25}]]])
+</code></pre>  
+</div>
+
+<p>XML tags are represented as Clojure vectors. The first value in the vector represents the tag's name. If the
+second value is a Clojure map, it is treated as the tag's
+attributes. Any remaining values will be vectors representing child elements.</p>
+
+<div class="footnote" align="center">&copy; 2011 David Edgar Liebke</div>
 
 </div> <!-- content -->
 </body> </html>

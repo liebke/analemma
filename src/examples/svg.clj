@@ -184,18 +184,19 @@
 (defn txt-box [txt x y fill]
   (let [box-width 300
 	box-height 50]
-    (svg {:x x :y y}
-	 (group 
-	  (-> (rect 0 0 box-height box-width :rx 5 :ry 5)
-	      (style :stroke fill :fill fill))
-	  (-> (text {:x (/ box-width 2)
-		     :y (/ box-height 2)}
-		    txt)
-	      (style :fill "#ffffff"
-		     :font-size "25px"
-		     :font-family "Verdana"
-		     :alignment-baseline :middle
-		     :text-anchor :middle))))))
+    (-> (svg 
+	  (group 
+	   (-> (rect 0 0 box-height box-width :rx 5 :ry 5)
+	       (style :stroke fill :fill fill))
+	   (-> (text txt)
+	       (add-attrs :x (/ box-width 2)
+			  :y (/ box-height 2))
+	       (style :fill "#ffffff"
+		      :font-size "25px"
+		      :font-family "Verdana"
+		      :alignment-baseline :middle
+		      :text-anchor :middle))))
+	(add-attrs :x x :y y))))
 
 (defn analemma-stack [directory]
   (spit (str directory "/analemma-stack.svg")

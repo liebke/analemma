@@ -97,8 +97,8 @@
 	(emit
 	  (svg
 	   (apply group
-		  (rect 0 0 160 500 :fill "#ffffff")
-		  (-> (text {:x 120 :y 60} "Analemma")
+		  (-> (text "Analemma")
+		      (add-attrs :x 120 :y 60)
 		      (style :fill #"000066"
 			     :font-family "Garamond"
 			     :font-size "75px"
@@ -107,3 +107,16 @@
 		    (circle (translate-value x -30 5 0 125)
 			    (translate-value y -25 30 125 0)
 			    2 :fill "#000066")))))))
+
+(defn rotating-analemma-logo [filename]
+  (spit filename
+	(emit
+	 (svg
+	  (-> (image "file:///Users/liebke/Desktop/dev/analemma/images/analemma-logo.svg"
+		     :width 500 :height 700)
+	      (animate-transform :begin 0
+					:dur 20
+					:type :rotate
+					:from "0 200 150"
+					:to "360 200 150"
+					:repeatCount :indefinite))))))
