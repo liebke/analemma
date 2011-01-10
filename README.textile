@@ -1,0 +1,41 @@
+
+<h1>Analemma</h1>
+
+<p><i><b><a href="http://liebke.github.com/analemma">Analemma</a></b> is a <a
+  href="http://clojure.org">Clojure</a>-based <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> DSL and charting library.</i> In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.</p>
+
+<a href="http://www.astronet.ru/db/xware/msg/1218925"><img src="http://images.astronet.ru/pubd/2006/12/25/0001219003/analemma2004_ayiomamitis.small.jpg" height="350" /></a>
+
+<h3>Example Charts</h3>
+
+<pre><code>
+(spit "analemma.svg"
+      (emit-svg
+        (-> (xy-plot :xmin -30 :maxx 10,
+                     :ymin -30 :maxy 30
+                     :height 500 :width 500)
+	     (add-points analemma-data))))
+</code></pre>
+
+<a href="http://liebke.github.com/analemma/images/analemma.svg"><img src="https://github.com/liebke/analemma/raw/master/images/analemma.png" width="400" /></a>
+
+<pre><code>
+(spit "sin-cos.svg"
+      (emit-svg
+        (let [x (range -5 5 0.05)
+              y1 (map #(Math/cos %) x)
+              y2 (map #(Math/sin %) x)]
+          (-> (xy-plot :minx -5 :xmax 5 :ymin -1.5 :maxy 1.5)
+              (add-points [x y1] :transpose-data?? true)
+              (add-points [x y2] :transpose-data?? true
+                          :color (rgb 255 0 0))))))
+</code></pre>
+
+<a href="http://liebke.github.com/analemma/images/sin-cos-small.svg"><img src="https://github.com/liebke/analemma/raw/master/images/sin-cos.png" width="400" /></a>
+
+<p>See the <a href="http://liebke.github.com/analemma">Analemma website</a> for more information.</p>
+
+
+Copyright (C) 2011 David Edgar Liebke
+
+Distributed under the Eclipse Public License, the same as Clojure.
