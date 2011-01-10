@@ -51,10 +51,10 @@
                       :font-family "Garamond"
                       :font-size "75px"
                       :alignment-baseline :middle))
-             (for [[x y] analemma-data]
-               (circle (translate-value x -30 5 0 125)
-                       (translate-value y -25 30 125 0)
-                       2 :fill "#000066")))))
+           (for [[x y] analemma-data]
+             (circle (translate-value x -30 5 0 125)
+                     (translate-value y -25 30 125 0)
+                     2 :fill "#000066")))))
 </code></pre></div>
 
 <a href="http://liebke.github.com/analemma/images/analemma-logo.svg"><img src="http://liebke.github.com/analemma/images/analemma-logo.png" /></a>
