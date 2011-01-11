@@ -75,13 +75,39 @@
 ;; FUNCTIONS FOR PARSING XML FILES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(defn get-xml-map [xml-string]
+  (xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
+
 (defn parse-xml-map [{:keys [tag attrs content]}]
   (lazy-cat (if attrs [tag attrs] [tag])
 	    (map parse-xml-map content)))
 
-(defn get-xml-map [xml-string]
-  (xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
-
 (defn parse-xml [xml-string]
   (parse-xml-map (get-xml-map xml-string)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; FUNCTIONS FOR QUERYING PARSED XML
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn query-children [xml-vec query-type query]
+  (let [pred (fn [child]
+	       (condp = query-type
+		   :tag (= (first child) query)   
+		   :attrs (reduce (fn [bool [k v]]
+				   (and bool (= (get (get-attrs child) k) v)))
+				 true query)))]
+    (filter pred (get-content xml-vec))))
+
+(defn query-descendents [xml-vec [& query-maps]]
+  "Example:
+    (query-descendents xml-vec [{:tag val1} {:attrs {name1 val1, name2 val2}} {:tag val2}])
+  "
+  (loop [results [xml-vec]
+	 [query & next-queries] query-maps]
+    (if query
+      (recur (mapcat #(query-children % (key (first query)) (val (first query)))
+		     results)
+	     next-queries)
+      results)))
+
 
