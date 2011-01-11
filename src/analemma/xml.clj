@@ -52,7 +52,7 @@
 		  content)))
 
 (defn update-attrs [tag [& keys] update-fn & args]
-  (set-attrs tag (apply update-in (get-attrs tag) keys update-fn args)))
+  (merge-attrs tag (apply update-in (get-attrs tag) keys update-fn args)))
 
 (defn emit-attrs [attrs]
   (when attrs
