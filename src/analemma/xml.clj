@@ -15,7 +15,8 @@
     (> (count tag) 1)))
 
 (defn get-name [tag]
-  (name (first tag)))
+  (if-let [n (first tag)]
+    (name n)))
 
 (defn get-attrs [tag]
   (if (has-attrs? tag) (second tag) {}))
@@ -59,12 +60,13 @@
 	    "" attrs)))
 
 (defn emit-tag [tag]
-  (str "<" (get-name tag) " "
-       (emit-attrs (get-attrs tag))
-       (if (seq (get-content tag))
-	 (str ">" (apply str (map #(if (string? %) % (emit-tag %)) (get-content tag)))
-	      "</" (get-name tag) ">")
-	 "/>")))
+  (if-let [n (get-name tag)]
+    (str "<" n " "
+	(emit-attrs (get-attrs tag))
+	(if (seq (get-content tag))
+	  (str ">" (apply str (map #(if (string? %) % (emit-tag %)) (get-content tag)))
+	       "</" n ">")
+	  "/>"))))
 
 (defn emit [& tags]
   (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
@@ -125,7 +127,7 @@
 		   :attrs (reduce (fn [bool [k v]]
 				   (and bool (= (get (get-attrs child) k) v)))
 				 true query)))]
-    (concat parent (map f (get-content xml-vec)))))
+    (concat parent (map #(if (pred %) (f %) %) (get-content xml-vec)))))
 
 (defn transform-descendents [xml-vec f [& query-maps]]
   "Example:

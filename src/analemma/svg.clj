@@ -1,5 +1,6 @@
 (ns analemma.svg
-  (:require [analemma.xml :as xml]))
+  (:require [analemma.xml :as xml]
+	    [clojure.string :as s]))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -15,9 +16,8 @@
 	content (if (map? (first content)) (rest content) content)]
     (concat [:svg (merge xmlns attrs)] content)))
 
-(defn style [elem & properties]
-  (let [props (apply hash-map properties)
-	styling (when (seq props)
+(defn style-map [elem props]
+  (let [styling (when (seq props)
 		  (reduce (fn [s [k v]]
 			    (str s " " (name k) ": "
 				 (if (keyword? v)
@@ -26,6 +26,9 @@
 				 "; "))
 			  "" props))]
     (xml/add-attrs elem :style styling)))
+
+(defn style [elem & properties]
+  (style-map elem (apply hash-map properties)))
 
 (defn line [x1 y1 x2 y2 & options]
   (let [attrs (apply hash-map options)]
@@ -135,3 +138,10 @@
 	trans (- to-min (* from-min scale))]
     (float (+ (* v scale) trans))))
 
+(defn parse-inline-css [css-str]
+  (reduce (fn [m [k v]] (assoc m (keyword k) v))
+	  {} (map #(s/split % #":") (s/split css-str #";"))))
+
+(defn add-style [elem & styling]
+  (let [css-str (or (:style (xml/get-attrs elem)) "")]
+    (style-map elem (apply merge (parse-inline-css css-str) (apply hash-map styling)))))

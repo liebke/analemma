@@ -1,6 +1,9 @@
 (ns examples.svg
-  (:use [analemma.xml :only [emit add-content add-attrs]]
-	analemma.svg))
+  (:use [analemma.xml :only [emit add-content add-attrs
+			     parse-xml query-descendents
+			     transform-descendents]]
+	analemma.svg
+	[clojure.java.io :only [file]]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ANALEMMA SVG EXAMPLES
@@ -216,4 +219,22 @@
 		   (animate :visibility :to :visible :begin 1)
 		   (animate :y :begin 1 :dur 4 :from 0 :to 120)))
 	      (translate 10 10))))))
+
+
+(defn parse-us-map []
+  (parse-xml (slurp "http://upload.wikimedia.org/wikipedia/commons/3/32/Blank_US_Map.svg")))
+
+(defn hide-california [filename]
+  (spit filename
+	(emit
+	 (transform-descendents (parse-us-map)
+				#(add-attrs % :visibility "hidden")
+				[{:attrs {:id "CA"}}]))))
+
+(defn color-california [filename]
+  (spit filename
+	(emit
+	 (transform-descendents (parse-us-map)
+				#(add-style % :fill "#ff0000")
+				[{:attrs {:id "CA"}}]))))
 
