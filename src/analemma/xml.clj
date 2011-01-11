@@ -75,15 +75,13 @@
 ;; FUNCTIONS FOR PARSING XML FILES
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn parse-xml-map [xml-map]
-  (let [f (fn [v m]
-	    (let [{:keys [tag attrs content]} m
-		  attrs-add #(if attrs (conj % attrs) %)
-		  content-add #(if content
-				 (apply conj % (map parse-xml-map content))
-				 %)]
-	      (apply conj v (content-add (attrs-add [tag])))))]
-    (reduce f [] [xml-map])))
+(defn parse-xml-map [{:keys [tag attrs content]}]
+  (lazy-cat (if attrs [tag attrs] [tag])
+	    (map parse-xml-map content)))
+
+(defn get-xml-map [xml-string]
+  (xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
 
 (defn parse-xml [xml-string]
-  (parse-xml-map (xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8")))))
+  (parse-xml-map (get-xml-map xml-string)))
+
