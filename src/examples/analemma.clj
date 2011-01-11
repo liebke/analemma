@@ -112,7 +112,7 @@
   (spit filename
 	(emit
 	 (svg
-	  (-> (image "file:///Users/liebke/Desktop/dev/analemma/images/analemma-logo.svg"
+	  (-> (image "file:images/analemma-logo.svg"
 		     :width 500 :height 700)
 	      (animate-transform :begin 0
 					:dur 20
