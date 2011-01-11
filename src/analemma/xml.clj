@@ -129,7 +129,8 @@
 
 (defn transform-descendents [xml-vec f [& query-maps]]
   "Example:
-    (query-descendents xml-vec [{:tag val1} {:attrs {name1 val1, name2 val2}} {:tag val2}])
+    (transform-descendents xml-vec #(add-attrs % :fill \"#ff0000\")
+                           [{:tag val1} {:attrs {name1 val1, name2 val2}} {:tag val2}])
   "
   (loop [results [xml-vec]
 	 [query & next-queries] query-maps]
