@@ -26,7 +26,8 @@
     (rest tag)))
 
 (defn set-attrs [tag & attrs]
-  (concat [(get-name tag) attrs]
+  (concat [(get-name tag)
+           (apply hash-map attrs)]
 	  (get-content tag)))
 
 (defn set-content [tag & content]
