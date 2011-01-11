@@ -1,7 +1,8 @@
 (ns examples.analemma
   (:use [analemma.charts :only [emit-svg xy-plot add-points]]
 	[analemma.svg]
-	[analemma.xml]))
+	[analemma.xml]
+	[clojure.java.io :only [file]]))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; ANALEMMA CHART
@@ -120,3 +121,20 @@
 					:from "0 200 150"
 					:to "360 200 150"
 					:repeatCount :indefinite))))))
+
+
+(defn query-and-transform-analemma [filename]
+  (let [logo (parse-xml (slurp (file "images/analemma-logo.svg")))
+	red-analemma (-> (query-descendents logo [{:tag :g} {:tag :circle}])
+			 (transform-descendents #(add-attrs % :fill "#FF0000")
+						[{:tag :circle}]))]
+    (spit filename
+	 (emit
+	  (svg
+	   (-> (concat [:g] red-analemma)
+	       (animate-transform :begin 0
+				  :dur 20
+				  :type :rotate
+				  :from "0 100 100"
+				  :to "360 100 100"
+				  :repeatCount :indefinite)))))))

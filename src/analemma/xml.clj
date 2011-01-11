@@ -111,3 +111,32 @@
       results)))
 
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; FUNCTIONS FOR TRANSFORMING PARSED XML
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defn transform-children [xml-vec f query-type query]
+  (let [parent (if (has-attrs? xml-vec)
+		 [(first xml-vec) (get-attrs xml-vec)]
+		 [(first xml-vec)])
+	pred (fn [child]
+	       (condp = query-type
+		   :tag (= (first child) query)   
+		   :attrs (reduce (fn [bool [k v]]
+				   (and bool (= (get (get-attrs child) k) v)))
+				 true query)))]
+    (concat parent (map f (get-content xml-vec)))))
+
+(defn transform-descendents [xml-vec f [& query-maps]]
+  "Example:
+    (query-descendents xml-vec [{:tag val1} {:attrs {name1 val1, name2 val2}} {:tag val2}])
+  "
+  (loop [results [xml-vec]
+	 [query & next-queries] query-maps]
+    (if query
+      (recur (mapcat #(transform-children % f (key (first query)) (val (first query)))
+		     results)
+	     next-queries)
+      results)))
+
+
