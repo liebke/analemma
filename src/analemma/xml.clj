@@ -27,7 +27,7 @@
     (drop 2 tag)
     (rest tag)))
 
-(defn set-attrs [tag & attrs]
+(defn set-attrs [tag attrs]
   (concat [(get-name tag) attrs]
 	  (get-content tag)))
 
@@ -123,9 +123,9 @@
 		:not (not (select-loc? loc [:or (second selector)]))))))))
 
 (defn filter-xml [xml-seq [& selectors]]
-  (let [filter-xml* (fn [zip-loc [selector & child-selectors]]
-		      (loop [nodes [] loc zip-loc]
-			(if (z/end? loc)
+  (letfn [(filter-xml* [zip-loc [selector & child-selectors]]
+		       (loop [nodes [] loc zip-loc]
+			 (if (z/end? loc)
 			  nodes
 			  (recur
 			   (if (select-loc? loc selector)
@@ -137,16 +137,17 @@
     (filter-xml* (z/seq-zip xml-seq) selectors)))
 
 (defn transform-xml [xml-seq [& selectors] f & args]
-  (let [transform-xml* (fn [zip-loc [selector & child-selectors] f & args]
+  (letfn [(transform-xml* [zip-loc [selector & child-selectors] f & args]
 			 (loop [loc zip-loc]
 			   (if (z/end? loc)
 			     loc
 			     (recur
-			      (z/next (if (select-loc? loc selector)
-					(if (seq child-selectors)
-					  (apply transform-xml* loc child-selectors f args)
-					  (apply z/edit loc f args))
-					loc))))))]
+			       (z/next
+			         (if (select-loc? loc selector)
+				   (if (seq child-selectors)
+				     (apply transform-xml* loc child-selectors f args)
+				     (apply z/edit loc f args))
+				   loc))))))]
     (z/root (apply transform-xml* (z/seq-zip xml-seq) selectors f args))))
 
 
