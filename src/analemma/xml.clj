@@ -100,10 +100,10 @@
 
     Examples of selectors:
      :tag-name
-     {:attr-name val}
+     {attr-name val}
      [:and :tag-name {:attr val}]
      [:or :tag1 :tag2]
-     [:and [:not {:attr val}] [:or :tag1 :tag2]]
+     [:and [:not {attr val}] [:or :tag1 :tag2]]
 
   "
   ([loc selector]
@@ -122,35 +122,33 @@
 		:or (reduce #(or %1 (select-loc? loc %2)) false (next selector))
 		:not (not (select-loc? loc [:or (second selector)]))))))))
 
-(defn- filter-xml* [zip-loc [selector & child-selectors]]
-  (loop [nodes []
-	 loc zip-loc]
-    (if (z/end? loc)
-      nodes
-      (recur
-       (if (select-loc? loc selector)
-	 (if (seq child-selectors)
-	   (filter-xml* loc child-selectors)
-	   (conj nodes (z/node loc)))
-	 nodes)
-       (z/next loc)))))
-
 (defn filter-xml [xml-seq [& selectors]]
-  (filter-xml* (z/seq-zip xml-seq) selectors))
-
-(defn- transform-xml* [zip-loc [selector & child-selectors] f & args]
-  (loop [loc zip-loc]
-    (if (z/end? loc)
-      loc
-      (recur
-       (z/next (if (select-loc? loc selector)
-		 (if (seq child-selectors)
-		   (apply transform-xml* loc child-selectors f args)
-		   (apply z/edit loc f args))
-		 loc))))))
+  (let [filter-xml* (fn [zip-loc [selector & child-selectors]]
+		      (loop [nodes [] loc zip-loc]
+			(if (z/end? loc)
+			  nodes
+			  (recur
+			   (if (select-loc? loc selector)
+			     (if (seq child-selectors)
+			       (filter-xml* loc child-selectors)
+			       (conj nodes (z/node loc)))
+			     nodes)
+			   (z/next loc)))))]
+    (filter-xml* (z/seq-zip xml-seq) selectors)))
 
 (defn transform-xml [xml-seq [& selectors] f & args]
-  (z/root (apply transform-xml* (z/seq-zip xml-seq) selectors f args)))
+  (let [transform-xml* (fn [zip-loc [selector & child-selectors] f & args]
+			 (loop [loc zip-loc]
+			   (if (z/end? loc)
+			     loc
+			     (recur
+			      (z/next (if (select-loc? loc selector)
+					(if (seq child-selectors)
+					  (apply transform-xml* loc child-selectors f args)
+					  (apply z/edit loc f args))
+					loc))))))]
+    (z/root (apply transform-xml* (z/seq-zip xml-seq) selectors f args))))
+
 
 
 

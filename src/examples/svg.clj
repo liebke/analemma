@@ -1,8 +1,6 @@
 (ns examples.svg
   (:use [analemma.xml :only [emit add-content add-attrs
-			     parse-xml query-descendents
-			     transform-descendents
-			     transform-xml]]
+			     parse-xml transform-xml filter-xml]]
 	analemma.svg
 	[clojure.java.io :only [file]]))
 
@@ -240,6 +238,21 @@
 			(fn [elem]
 			  (-> (add-style elem :fill "#0000ff")
 			      (add-attrs :transform "scale(1.10)")))))))
+
+
+(defn select-maryland [filename]
+  (spit filename
+	(emit
+	 (svg (-> (apply svg {:x -600 :y -200}
+			 (filter-xml (parse-us-map)
+				     [[:or "sodipodi:namedview" :defs {:id "MD"}]]))
+		  (transform-xml [:svg]
+				 #(add-attrs %
+			            "xmlns:sodipodi" "http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+				    "xmlns:inkscape" "http://www.inkscape.org/namespaces/inkscape"))
+		  (transform-xml [{:id "MD"}]
+				 (fn [elem]
+				   (add-attrs elem :transform "scale(1.5)"))))))))
 
 (defn to-hex-string [n] (str "#" (Integer/toHexString n)))
 
