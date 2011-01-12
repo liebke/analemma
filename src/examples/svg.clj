@@ -1,7 +1,8 @@
 (ns examples.svg
   (:use [analemma.xml :only [emit add-content add-attrs
 			     parse-xml query-descendents
-			     transform-descendents]]
+			     transform-descendents
+			     transform-xml]]
 	analemma.svg
 	[clojure.java.io :only [file]]))
 
@@ -227,14 +228,89 @@
 (defn hide-california [filename]
   (spit filename
 	(emit
-	 (transform-descendents (parse-us-map)
-				#(add-attrs % :visibility "hidden")
-				[{:attrs {:id "CA"}}]))))
+	 (transform-xml (parse-us-map)
+			[{:id "CA"}]
+			#(add-attrs % :visibility "hidden")))))
 
-(defn color-california [filename]
+(defn color-maryland [filename]
   (spit filename
 	(emit
-	 (transform-descendents (parse-us-map)
-				#(add-style % :fill "#ff0000")
-				[{:attrs {:id "CA"}}]))))
+	 (transform-xml (parse-us-map)
+			[{:id "MD"}]
+			(fn [elem]
+			  (-> (add-style elem :fill "#0000ff")
+			      (add-attrs :transform "scale(1.10)")))))))
+
+(defn to-hex-string [n] (str "#" (Integer/toHexString n)))
+
+;;(to-hex-string (translate-value 0.5 0 1 0 16777215))
+
+(def us-states
+     {"AK"	 "ALASKA"
+      "AL"	 "ALABAMA"
+      "AR"	 "ARKANSAS"
+      "AS"	 "AMERICAN SAMOA"
+      "AZ"	 "ARIZONA"
+      "CA"	 "CALIFORNIA"
+      "CO"	 "COLORADO"
+      "CT"	 "CONNECTICUT"
+      "DC"	 "WASHINGTON, DC"
+      "DE"	 "DELAWARE"
+      "FL"	 "FLORIDA"
+      "FM"	 "FEDERATED STATES OF MICRONESIA"
+      "GA"	 "GEORGIA"
+      "GU"	 "GUAM"
+      "HI"	 "HAWAII"
+      "IA"	 "IOWA"
+      "ID"	 "IDAHO"
+      "IL"	 "ILLINOIS"
+      "IN"	 "INDIANA"
+      "KS"	 "KANSAS"
+      "KY"	 "KENTUCKY"
+      "LA"	 "LOUISIANA"
+      "MA"	 "MASSACHUSETTS"
+      "MD"	 "MARYLAND"
+      "ME"	 "MAINE"
+      "MH"	 "MARSHALL ISLANDS"
+      "MI"	 "MICHIGAN"
+      "MN"	 "MINNESOTA"
+      "MO"	 "MISSOURI"
+      "MP"	 "NORTHERN MARIANA ISLANDS"
+      "MS"	 "MISSISSIPPI"
+      "MT"	 "MONTANA"
+      "NC"	 "NORTH CAROLINA"
+      "ND"	 "NORTH DAKOTA"
+      "NE"	 "NEBRASKA"
+      "NH"	 "NEW HAMPSHIRE"
+      "NJ"	 "NEW JERSEY"
+      "NM"	 "NEW MEXICO"
+      "NV"	 "NEVADA"
+      "NY"	 "NEW YORK"
+      "OH"	 "OHIO"
+      "OK"	 "OKLAHOMA"
+      "OR"	 "OREGON"
+      "PA"	 "PENNSYLVANIA"
+      "PR"	 "PUERTO RICO"
+      "PW"	 "PALAU"
+      "RI"	 "RHODE ISLAND"
+      "SC"	 "SOUTH CAROLINA"
+      "SD"	 "SOUTH DAKOTA"
+      "TN"	 "TENNESSEE"
+      "TX"	 "TEXAS"
+      "UT"	 "UTAH"
+      "VA"	 "VIRGINIA"
+      "VI"	 "VIRGIN ISLANDS"
+      "VT"	 "VERMONT"
+      "WA"	 "WASHINGTON"
+      "WI"	 "WISCONSIN"
+      "WV"	 "WEST VIRGINIA"
+      "WY"	 "WYOMING"})
+
+(defn color-states [filename]
+  (spit filename
+	(emit
+	 (transform-xml (parse-us-map)
+			[[:and [:not {:id "path57"}] [:or :g :path]]]
+			(fn [elem]
+			  (add-style elem :fill (to-hex-string (rand 16777215))))))))
 

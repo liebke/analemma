@@ -125,13 +125,12 @@
 
 (defn query-and-transform-analemma [filename]
   (let [logo (parse-xml (slurp (file "images/analemma-logo.svg")))
-	red-analemma (-> (query-descendents logo [{:tag :g} {:tag :circle}])
-			 (transform-descendents #(add-attrs % :fill "#FF0000")
-						[{:tag :circle}]))]
+	red-analemma (-> (concat [:g] (filter-xml logo [:g :circle]))
+			 (transform-xml [:circle] #(add-attrs % :fill "#FF0000")))]
     (spit filename
 	 (emit
 	  (svg
-	   (-> (concat [:g] red-analemma)
+	   (-> red-analemma
 	       (animate-transform :begin 0
 				  :dur 20
 				  :type :rotate
