@@ -1,4 +1,3 @@
-(defproject analemma "1.0.0-SNAPSHOT"
-  :description "An SVG DSL for Clojure"
-  :dependencies [[org.clojure/clojure "1.2.0"]]
-  :dev-dependencies [[swank-clojure "1.3.0-SNAPSHOT"]])
+(defproject analemma "1.1.0"
+  :description "An SVG DSL for Clojure and ClojureScript"
+  :dependencies [[org.clojure/clojure "1.10.1"]])

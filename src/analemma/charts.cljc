@@ -1,8 +1,10 @@
 (ns analemma.charts
-  (:use [analemma.svg :only [rect style line text group
-			     translate circle rgb svg
-			     translate-value]]
-	[analemma.xml :only [emit]]))
+  (:require [analemma.svg :refer [rect style line text group
+                                  translate circle rgb svg
+                                  translate-value]]
+            [analemma.xml :refer [emit]]
+            #?@(:cljs [[goog.string :as gstring]
+                       [goog.string.format]])))
 
 (def default-chart-props {:x 50, :y 50,
 			  :height 500, :width 750,
@@ -31,7 +33,6 @@
 	     :stroke-width major-grid-width)))
 
 (defn x-grid [{:keys [height width
-		      xmin xmax
 		      grid-lines
 		      major-grid-color minor-grid-color
 		      major-grid-width minor-grid-width]}]
@@ -42,7 +43,6 @@
 		 :stroke-width (if (even? i) major-grid-width minor-grid-width))))))
 
 (defn y-grid [{:keys [height width
-		      ymin ymax
 		      grid-lines
 		      major-grid-color minor-grid-color
 		      major-grid-width minor-grid-width]}]
@@ -60,15 +60,15 @@
   (let [grid-x-space (/ width grid-lines)]
     (for [i (range 0 (inc grid-lines)) :when (even? i)]
       (-> (text {:x (* i grid-x-space) :y (+ 20 height)}
-		(format axis-number-format
-			(translate-value (* i grid-x-space)
-					 0 width xmin xmax)))
+		(#?(:clj format :cljs gstring/format) axis-number-format
+                                                      (translate-value (* i grid-x-space)
+                                                                       0 width xmin xmax)))
 	  (style :fill (rgb 150 150 150)
 		 :font-family axis-font-family
 		 :font-size axis-font-size
 		 :text-anchor :middle)))))
 
-(defn y-axis [{:keys [height width
+(defn y-axis [{:keys [height
 		      ymin ymax
 		      grid-lines
 		      axis-font-family axis-font-size
@@ -76,9 +76,9 @@
   (let [grid-y-space (/ height grid-lines)]
     (for [i (range 1 (inc grid-lines)) :when (even? i)]
       (-> (text {:x 0 :y (- height (* i grid-y-space))}
-		(format axis-number-format
-			(translate-value (* i grid-y-space)
-					 0 height ymin ymax)))
+		(#?(:clj format :cljs gstring/format) axis-number-format
+                                                      (translate-value (* i grid-y-space)
+                                                                       0 height ymin ymax)))
 	  (style :fill (rgb 150 150 150)
 		 :font-family axis-font-family
 		 :font-size axis-font-size
@@ -99,10 +99,10 @@
 (defn point-label [{:keys [label-font-family
 			   label-font-size
 			   label-number-format]}
-		   x* y* x y r & options]
+		   x* y* x y r & _]
   (-> (text {:x (+ x* r) :y (- y* r)}
-	    (str (format label-number-format (float x)) ","
-		 (format label-number-format (float y))))
+	    (str (#?(:clj format :cljs gstring/format) label-number-format (float x)) ","
+		 (#?(:clj format :cljs gstring/format) label-number-format (float y))))
       (style :fill (rgb 100 100 150)
 	     :font-family label-font-family
 	     :font-size label-font-size)))
@@ -138,4 +138,3 @@
 
 (defn emit-svg [chart]
   (emit (svg (:svg chart))))
-

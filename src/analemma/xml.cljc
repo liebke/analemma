@@ -1,7 +1,7 @@
 (ns analemma.xml
-  (:require [clojure.xml :as xml]
+  (:require #?(:clj [clojure.xml :as xml])
 	    [clojure.zip :as z])
-  (:import [java.io ByteArrayInputStream]))
+  #?(:clj (:import [java.io ByteArrayInputStream])))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; XML FUNCTIONS
@@ -75,28 +75,28 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; FUNCTIONS FOR PARSING XML FILES
+;; FUNCTIONS FOR PARSING XML FILES: CLOJURE ONLY
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn get-xml-map [xml-string]
-  (xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8"))))
+#?(:clj (defn get-xml-map [xml-string]
+          (xml/parse (ByteArrayInputStream. (.getBytes xml-string "UTF-8")))))
 
-(defn parse-xml-map [xml-map]
-  (if (map? xml-map)
-    (let [{:keys [tag attrs content]} xml-map]
-      (lazy-cat (if attrs [tag attrs] [tag])
-		(map parse-xml-map content)))
-    xml-map))
+#?(:clj (defn parse-xml-map [xml-map]
+          (if (map? xml-map)
+            (let [{:keys [tag attrs content]} xml-map]
+              (lazy-cat (if attrs [tag attrs] [tag])
+                        (map parse-xml-map content)))
+            xml-map)))
 
-(defn parse-xml [xml-string]
-  (parse-xml-map (get-xml-map xml-string)))
+#?(:clj (defn parse-xml [xml-string]
+          (parse-xml-map (get-xml-map xml-string))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; FUNCTIONS FOR FILTERING AND TRANSFORMING PARSED XML
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn- select-loc?
-  "Provides selector functionality used by filter-xml and transform-xml.
+   "Provides selector functionality used by filter-xml and transform-xml.
 
     Examples of selectors:
      :tag-name
@@ -106,21 +106,21 @@
      [:and [:not {attr val}] [:or :tag1 :tag2]]
 
   "
-  ([loc selector]
-     (when (z/branch? loc)
-       (let [node (z/node loc)]
-	 (cond
-	  (map? selector)
-            (and (has-attrs? node)
-	         (= (select-keys (get-attrs node) (keys selector))
-		    selector))
-	  (or (string? selector) (keyword? selector))
-            (= (get-name node) (name selector))
-	  (coll? selector)
-            (condp = (first selector)
-		:and (reduce #(and %1 (select-loc? loc %2)) true (next selector))
-		:or (reduce #(or %1 (select-loc? loc %2)) false (next selector))
-		:not (not (select-loc? loc [:or (second selector)]))))))))
+   ([loc selector]
+    (when (z/branch? loc)
+      (let [node (z/node loc)]
+        (cond
+          (map? selector)
+          (and (has-attrs? node)
+               (= (select-keys (get-attrs node) (keys selector))
+                  selector))
+          (or (string? selector) (keyword? selector))
+          (= (get-name node) (name selector))
+          (coll? selector)
+          (condp = (first selector)
+            :and (reduce #(and %1 (select-loc? loc %2)) true (next selector))
+            :or (reduce #(or %1 (select-loc? loc %2)) false (next selector))
+            :not (not (select-loc? loc [:or (second selector)]))))))))
 
 (defn filter-xml [xml-seq [& selectors]]
   (letfn [(filter-xml* [zip-loc [selector & child-selectors]]
@@ -149,7 +149,3 @@
 				     (apply z/edit loc f args))
 				   loc))))))]
     (z/root (apply transform-xml* (z/seq-zip xml-seq) selectors f args))))
-
-
-
-
