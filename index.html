@@ -46,7 +46,7 @@ code { color: #555555; }
 
 <body>
 <div class="content">
-  
+
 
 <embed src="images/analemma-logo.svg" width="475" height="135"
 type="image/svg+xml"
@@ -65,7 +65,7 @@ type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
 <h2>Architecture</h2>
-  
+
   <embed src="images/analemma-stack.svg" width="350" height="200"
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
@@ -77,20 +77,20 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
  when teaching
  Clojure programming, and so it's been designed to be lightweight and
  have no dependencies other than Clojure.</p>
- 
+
  <p>Analemma is designed as a stack of three simple libraries, each building
- on the one below it. At the bottom is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/xml.clj">analemma.xml</a>, which provides a
+ on the one below it. At the bottom is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/xml.cljs">analemma.xml</a>, which provides a
  lightweight DSL for generating XML from Clojure data structures; if you've used <a href="https://github.com/weavejester">James Reeves</a>'
  <a href="https://github.com/weavejester/hiccup">Hiccup</a> library
  for generating HTML, then the syntax will look familiar.</p>
 
- <p>The next level up is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/svg.clj">analemma.svg</a>, which provides a set of
+ <p>The next level up is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/svg.cljs">analemma.svg</a>, which provides a set of
  functions for generating and transforming SVG images and animations. SVG supports an
  enormous number of tags, most of which are not represented in this
  library; when an unimplemented tag is required, just drop down into analemma.xml
  and create the necessary SVG XML with Clojure data structures.</p>
 
- <p>The final layer is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/charts.clj">analemma.charts</a>, which provides basic charting
+ <p>The final layer is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/charts.cljs">analemma.charts</a>, which provides basic charting
  functionality with a syntax similar to <a
  href="http://incanter.org">Incanter</a>, and a visual theme similar
  to <a href="http://had.co.nz/">Hadley Wickham</a>'s <a href="http://had.co.nz/ggplot2/">ggplot2</a> library for
@@ -98,7 +98,7 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
  library has just begun, and it is missing a lot of functionality; when
  additional features are required, just drop down into analemma.svg or
  analemma.xml.</p>
- 
+
 <h2>analemma.charts examples</h2>
 
 <h3>Plotting Analemma Data</h3>
@@ -183,7 +183,7 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
 <h3>Analemma Logo</h3>
 
-<embed src="images/analemma-logo.svg" width="475" height="135" 
+<embed src="images/analemma-logo.svg" width="475" height="135"
 type="image/svg+xml"
 pluginspage="http://www.adobe.com/svg/viewer/install/" />
 
@@ -226,8 +226,8 @@ github</a>.</p>
 <pre><code>(defn txt-box [txt x y fill]
   (let [box-width 300
 	box-height 50]
-    (-> (svg 
-	  (group 
+    (-> (svg
+	  (group
 	    (-> (rect 0 0 box-height box-width :rx 5 :ry 5)
 	        (style :stroke fill :fill fill))
 	    (-> (text txt)
@@ -272,7 +272,7 @@ The following code uses analemma.xml to produce a snippet of SVG XML.
               :style "stroke: #660000; fill: #660000;"}]
       [:text {:style "fill: #660000; font-size: 25px; font-family: Verdana"
               :x 150 :y 25}]]])
-</code></pre>  
+</code></pre>
 </div>
 
 <p>XML tags are represented as Clojure vectors. The first value in the vector represents the tag's name. If the
