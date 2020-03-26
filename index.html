@@ -79,18 +79,18 @@ pluginspage="http://www.adobe.com/svg/viewer/install/" />
  have no dependencies other than Clojure.</p>
 
  <p>Analemma is designed as a stack of three simple libraries, each building
- on the one below it. At the bottom is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/xml.cljs">analemma.xml</a>, which provides a
+ on the one below it. At the bottom is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/xml.cljc">analemma.xml</a>, which provides a
  lightweight DSL for generating XML from Clojure data structures; if you've used <a href="https://github.com/weavejester">James Reeves</a>'
  <a href="https://github.com/weavejester/hiccup">Hiccup</a> library
  for generating HTML, then the syntax will look familiar.</p>
 
- <p>The next level up is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/svg.cljs">analemma.svg</a>, which provides a set of
+ <p>The next level up is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/svg.cljc">analemma.svg</a>, which provides a set of
  functions for generating and transforming SVG images and animations. SVG supports an
  enormous number of tags, most of which are not represented in this
  library; when an unimplemented tag is required, just drop down into analemma.xml
  and create the necessary SVG XML with Clojure data structures.</p>
 
- <p>The final layer is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/charts.cljs">analemma.charts</a>, which provides basic charting
+ <p>The final layer is <a href="https://github.com/liebke/analemma/blob/master/src/analemma/charts.cljc">analemma.charts</a>, which provides basic charting
  functionality with a syntax similar to <a
  href="http://incanter.org">Incanter</a>, and a visual theme similar
  to <a href="http://had.co.nz/">Hadley Wickham</a>'s <a href="http://had.co.nz/ggplot2/">ggplot2</a> library for
