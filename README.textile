@@ -1,8 +1,8 @@
 
 
-<a href="http://liebke.github.com/analemma"><img src="http://liebke.github.com/analemma/images/analemma-logo.png" /></a>
+<a href="http://liebke.github.io/analemma"><img src="http://liebke.github.io/analemma/images/analemma-logo.png" /></a>
 
-<p><i><b><a href="http://liebke.github.com/analemma">Analemma</a></b> is a <a
+<p><i><b><a href="http://liebke.github.io/analemma">Analemma</a></b> is a <a
   href="http://clojure.org">Clojure</a>-based <a href="http://en.wikipedia.org/wiki/Scalable_Vector_Graphics">SVG</a> DSL and charting library.</i> In astronomy, an <a href="http://en.wikipedia.org/wiki/Analemma">analemma</a> is the figure drawn in the sky by the different positions of the Sun recorded at the same time and location during the course of a year.</p>
 
 <!-- <a href="http://www.astronet.ru/db/xware/msg/1218925"><img src="http://images.astronet.ru/pubd/2006/12/25/0001219003/analemma2004_ayiomamitis.small.jpg" height="250" /></a> -->
@@ -20,7 +20,7 @@
 	     (add-points analemma-data))))
 </code></pre>
 
-<a href="http://liebke.github.com/analemma/images/analemma.svg"><img src="https://github.com/liebke/analemma/raw/master/images/analemma.png" width="400" /></a>
+<a href="http://liebke.github.io/analemma/images/analemma.svg"><img src="https://github.com/liebke/analemma/raw/master/images/analemma.png" width="400" /></a>
 
 
 <h3>Plotting Sine and Cosine</h3>
@@ -37,7 +37,7 @@
                           :color (rgb 255 0 0))))))
 </code></pre>
 
-<a href="http://liebke.github.com/analemma/images/sin-cos-small.svg"><img src="https://github.com/liebke/analemma/raw/master/images/sin-cos.png" width="400" /></a>
+<a href="http://liebke.github.io/analemma/images/sin-cos-small.svg"><img src="https://github.com/liebke/analemma/raw/master/images/sin-cos.png" width="400" /></a>
 
 
 <h3>Creating the Analemma logo</h3>
@@ -57,11 +57,11 @@
                      2 :fill "#000066")))))
 </code></pre></div>
 
-<a href="http://liebke.github.com/analemma/images/analemma-logo.svg"><img src="http://liebke.github.com/analemma/images/analemma-logo.png" /></a>
+<a href="http://liebke.github.io/analemma/images/analemma-logo.svg"><img src="http://liebke.github.io/analemma/images/analemma-logo.png" /></a>
 
 
 
-<p>See the <a href="http://liebke.github.com/analemma">Analemma website</a> for more examples.</p>
+<p>See the <a href="http://liebke.github.io/analemma">Analemma website</a> for more examples.</p>
 
 
 Copyright (C) 2011 David Edgar Liebke
